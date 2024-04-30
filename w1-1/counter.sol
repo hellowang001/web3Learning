@@ -23,4 +23,7 @@ contract Counter {
     function count() public {
         counter = counter + 1;
     }
+    function add(uint256 a,uint256 b) public{
+        counter = a+b;
+    }
 }
