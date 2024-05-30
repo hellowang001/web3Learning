@@ -7,7 +7,7 @@ schnorr_test = schnorr.SchnorrSignObj()
 
 # 产生密钥并对交易签名
 private_key = SigningKey.generate(curve=SECP256k1).to_string()
-message = b"Hello, Schnorr!2"
+message = b"Hello, Schnorr!2222"
 signature = schnorr_test.schnorr_sign(private_key, message)
 print("Signature:", signature)
 
