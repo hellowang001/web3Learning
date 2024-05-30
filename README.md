@@ -1,2 +1,2 @@
-# web3learing
-web3.0 learing note
+# web3learning
+web3.0 learning note
