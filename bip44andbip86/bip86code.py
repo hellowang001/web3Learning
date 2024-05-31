@@ -20,3 +20,4 @@ def generate_taproot_address(mnemonic):
     witprog = tweaked_pubkey[1:33]
     address = bech32.encode('bc', witver, witprog)
     return address
+

@@ -1,30 +1,27 @@
 # -*- coding: utf-8 -*-
-
+import bip32
 import bip39, os, hashlib
 # import bip32
 # from bip32 import bip32
-from bip32.bip32 import BIP32
-# from bip32 import BIP32
+# from bip32.bip32 import BIP32
+from bip32 import BIP32
+# b = BIP32()
+from ecdsa import SECP256k1, SigningKey
+from web3 import Web3
+from eth_account import Account
 
 
 # 生成助记词
 class Bip39Mnemonic(object):
 
-    # 种子短语生成公钥
-    def seedtoPub(self,seed):
-        # bip32.from_seed
-        # bip=BIP32.from_seed(seed=seed)
+    def privateKeyToAccount(self, privateKey):
+        account = Account.from_key(privateKey)
+        return account
 
-        b = BIP32()
-        return None
-
-    # 助记词转种子短语
-    def mnemonicToSeed(self, phrase):
-        seed = bip39.phrase_to_seed(phrase=phrase)
-        return seed
-
-        pass
-
+    def mnemonic_to_account(self, mnemonic):
+        Account.enable_unaudited_hdwallet_features()
+        account = Account.from_mnemonic(mnemonic)
+        return account
 
     # 生成随机助记词
     def generateMnemonic(self):
@@ -61,8 +58,10 @@ class Bip39Mnemonic(object):
 if __name__ == '__main__':
     bp = Bip39Mnemonic()
     test_mne = bp.generateMnemonic()
-    print(test_mne)
-    test_seed = bp.mnemonicToSeed(phrase=test_mne)
-    print(test_seed)
-    ttt=bp.seedtoPub(seed=test_seed)
-    print(ttt)
+    account = bp.mnemonic_to_account(test_mne)
+    print(account)
+    a = account.address
+
+    print(a)
+    k=account.key
+    print(k)
