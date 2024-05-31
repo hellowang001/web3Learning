@@ -7,7 +7,7 @@ class SchnorrSignObj:
     curve: Curve
     def __init__(self):
         # 椭圆曲线参数
-        self.curve = SECP256k1 # curve就是椭圆曲线对象，SECP256k1就是常见的椭圆曲线
+        self.curve = SECP256k1 # curve就是椭圆曲线对象，SECP256k1就是常见的椭圆曲线1
 
     def schnorr_sign(self, private_key, message): # 签名函数，传私钥和msg
         # 生成私钥和公钥
