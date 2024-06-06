@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/tyler-smith/go-bip32"
 	"github.com/tyler-smith/go-bip39"
@@ -13,15 +14,15 @@ func main() {
 	fmt.Println("开始")
 	// 首先你可以生成一个随机熵，熵源助记词是BIP-39，
 	entropy, _ := bip39.NewEntropy(128)
-	fmt.Println("entroy", entropy)
+	fmt.Println("entroy:", entropy)
 	// 通过熵源生成助记词  ==> 注意，不一定要有助记词才有种子，只是助记词方便备份，可以转成种子，你要直接由种子也行，但不好记
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	fmt.Println("mnemonic", mnemonic)
+	fmt.Println("mnemonic:", mnemonic)
 	// 通过助记词生成种子Seed
 	seed := bip39.NewSeed(mnemonic, "") // password盐值不要加
 	fmt.Println("seed", seed)
 
-	// 接下来就是将种子恢复出主私钥 masterKey 这里进入到了BIP-32了
+	// 接下来就是将种子恢复出主私钥 masterKey 这里进入到了BIP-32了 a
 	masterKey, _ := bip32.NewMasterKey(seed)
 	// 注意，此时还是主私钥，接下来要派生子私钥，派生出来的子私钥才是真正的“私钥”才能对应链的公钥，才能解压缩出地址
 	fmt.Println("masterKey", masterKey)
