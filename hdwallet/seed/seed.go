@@ -13,10 +13,10 @@ func main() {
 	// @参数 128 => 12个单词
 	// @参数 256 => 24个单词
 	entropy, _ := bip39.NewEntropy(128)
-	fmt.Println("entropy", entropy)
-	//mnemonic, _ := bip39.NewMnemonic(entropy)
+	//fmt.Println("entropy", entropy)
+	mnemonic, _ := bip39.NewMnemonic(entropy)
 	//mnemonic := "distance cool level useful print pet yard measure paddle bird solve inner"
-	mnemonic := "arctic prefer palm meat fruit love stick achieve glance jelly clerk skirt"
+	//mnemonic := "arctic prefer palm meat fruit love stick achieve glance jelly clerk skirt"
 	fmt.Println("助记词：", mnemonic)
 	fmt.Printf("助记词：type: %T\n", mnemonic)
 
