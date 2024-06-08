@@ -9,4 +9,5 @@
 /.idea
 /.venv
 /.vscode
+/go.mod
 
