@@ -8,7 +8,7 @@ w3 = Web3(Web3.HTTPProvider(alchemy_url))
 # Print if web3 is successfully connected11222
 # print(w3.isConnected())
 
-# Get the latest block number
+# Get the latest block number test 3
 latest_block = w3.eth.block_number
 print(latest_block)
 
