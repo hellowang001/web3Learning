@@ -1,16 +1,15 @@
-package main
+package hdwallet
 
 import (
 	"encoding/hex"
 	"fmt"
-
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/tyler-smith/go-bip32"
 	"github.com/tyler-smith/go-bip39"
 )
 
 // 生成一个以太坊的钱包
-func main() {
+func ethWallet() {
 	fmt.Println("开始")
 	// 首先你可以生成一个随机熵，熵源助记词是BIP-39，
 	entropy, _ := bip39.NewEntropy(128)
