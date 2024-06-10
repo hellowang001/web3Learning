@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package cosmos;
+option go_package = "github.com/wangxiaowang01/web3learning/hdwallet/cosmos";
+import "google/protobuf/empty.proto";
+
+service MyService {
+  rpc MyMethod (google.protobuf.Empty) returns (MyResponse) {}
+}
+
+message MyResponse {
+  string result = 1;
+}
