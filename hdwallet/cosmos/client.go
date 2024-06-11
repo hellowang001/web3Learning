@@ -3,15 +3,11 @@ package cosmos
 import (
 	"context"
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	typetx "github.com/cosmos/cosmos-sdk/types/tx"
-	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/gogo/protobuf/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/google"
-	"google.golang.org/protobuf/proto"
 )
 
 // NewClient 新建链接，用于创建一个 grpc 客户端
@@ -52,76 +48,112 @@ func NewClient() (grpcClient *grpc.ClientConn, err error) {
 
 }
 
-// BuildTxV2 B用于构建一个交易的原始数据结构 TxRaw
-func BuildTxV2(chainId string, sequence, accountNumber uint64, privKey *secp256k1.PrivKey, fee sdk.Coin, gaslimit int64, msgs []sdk.Msg) (*typetx.TxRaw, error) {
-	// 创建一个空的 txBodyMessage 切片，用于存储交易消息的 types.Any 对象
-	txBodyMessage := make([]*types.Any, 0)
-	// 使用一个循环遍历 msgs 切片中的每个消息，并将其转换为 types.Any 对象，并将其添加到 txBodyMessage 中。
-	for i := 0; i < len(msgs); i++ {
-		msgAnyValue, err := types.NewAnyWithValue(msgs[i])
-		if err != nil {
-			return nil, err
-		}
-		txBodyMessage = append(txBodyMessage, msgAnyValue) //
-	}
-	// 这里是 创建一个结构体对象，txBody，待会会用上
-	txBody := &typetx.TxBody{
-		Messages:                    txBodyMessage, // msg
-		Memo:                        "",            // 备注
-		TimeoutHeight:               0,             // 超时块高
-		ExtensionOptions:            nil,           // 选项？
-		NonCriticalExtensionOptions: nil,
-	}
-	// 将 txBody 对象序列化为字节流 txBodyBytes。
-	txBodyBytes, err := proto.Marshal(txBody)
+func queryAccountInfo() (*authtypes.BaseAccount, error) {
+	grpcConn, err := NewClient()
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	// 公钥
-	pubAny, err := types.NewAnyWithValue(privKey.PubKey())
+	// 先定义Client
+	authClient := authtypes.NewQueryClient(grpcConn)
+	// 定义请求格式，
+	authReq := &authtypes.QueryAccountRequest{Address: "cosmos167a4tt9k3ue0rxm2qq4a8pzp4t8ccyt5z26r2d"}
+	// 发送请求
+	//authResp, err := authClient.Account(context.Background(), atuhReq)
+	authResp, err := authClient.Account(context.Background(), authReq)
+	// 定义一个空的结构体，account就是一个BaseAccount类型的结构体
+	account := authtypes.BaseAccount{}
+	err = proto.Unmarshal(authResp.Account.Value, &account)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	authInfo := &typetx.AuthInfo{
-		SignerInfos: []*typetx.SignerInfo{
-			PublicKey: {
-				PublicKey: pubAny,
-				ModeInfo: &typetx.ModeInfo{
-					Sum: &typetx.ModeInfo_Single_{
-						Single: &typetx.ModeInfo_Single{Mode: signing.SignMode_SIGN_MODE_DIRECT},
-					},
-				},
-				Sequence: sequence,
-			},
-		},
-		Fee: &typetx.Fee{
-			Amount:   sdk.NewCoins(fee),
-			GasLimit: uint64(gaslimit),
-			Payer:    "",
-			Granter:  "",
-		},
-	}
-	txAuthInfoBytes, err := proto.Marshal(authInfo)
-	if err != nil {
-		return nil, err
-	}
-	signDoc := &typetx.SignDoc{
-		BodyBytes:     txBodyBytes,
-		AuthInfoBytes: txAuthInfoBytes,
-		ChainId:       chainId,
-		AccountNumber: accountNumber,
-	}
-	signatures, err := proto.Marshal(signDoc)
-	if err != nil {
-		return nil, err
-	}
-	sign, err := privKey.Sign(signatures)
-	if err != nil {
-		return nil, err
-	}
-	return &typetx.TxRaw{
-		BodyBytes:     txBodyBytes,
-		AuthInfoBytes: signDoc.AuthInfoBytes,
-		Signatures:    [][]byte{sign},
-	}, nil
+
+	fmt.Println("Account number:", account.AccountNumber)
+	fmt.Println("Sequence:", account.Sequence)
+	fmt.Println("Address:", account.Address)
+	//fmt.Println("Coins:", account.Coins)
+	//if err := proto.Unmarshal(authResp.Account.Value, &account); err != nil {
+	//	panic(err)
+	//}
+
+	// 处理响应
+	//if err != nil {
+	//	panic(err)
+	//}
+	return &account, err
+	//fmt.Println("auth:=====", account.Address, account.AccountNumber, account.Sequence)
+
 }
+
+//// BuildTxV2 B用于构建一个交易的原始数据结构 TxRaw
+//func BuildTxV2(chainId string, sequence, accountNumber uint64, privKey *secp256k1.PrivKey, fee sdk.Coin, gaslimit int64, msgs []sdk.Msg) (*typetx.TxRaw, error) {
+//	// 创建一个空的 txBodyMessage 切片，用于存储交易消息的 types.Any 对象
+//	txBodyMessage := make([]*types.Any, 0)
+//	// 使用一个循环遍历 msgs 切片中的每个消息，并将其转换为 types.Any 对象，并将其添加到 txBodyMessage 中。
+//	for i := 0; i < len(msgs); i++ {
+//		msgAnyValue, err := types.NewAnyWithValue(msgs[i])
+//		if err != nil {
+//			return nil, err
+//		}
+//		txBodyMessage = append(txBodyMessage, msgAnyValue) //
+//	}
+//	// 这里是 创建一个结构体对象，txBody，待会会用上
+//	txBody := &typetx.TxBody{
+//		Messages:                    txBodyMessage, // msg
+//		Memo:                        "",            // 备注
+//		TimeoutHeight:               0,             // 超时块高
+//		ExtensionOptions:            nil,           // 选项？
+//		NonCriticalExtensionOptions: nil,
+//	}
+//	// 将 txBody 对象序列化为字节流 txBodyBytes。
+//	txBodyBytes, err := proto.Marshal(txBody)
+//	if err != nil {
+//		return nil, err
+//	}
+//	// 公钥
+//	pubAny, err := types.NewAnyWithValue(privKey.PubKey())
+//	if err != nil {
+//		return nil, err
+//	}
+//	authInfo := &typetx.AuthInfo{
+//		SignerInfos: []*typetx.SignerInfo{
+//			PublicKey: {
+//				PublicKey: pubAny,
+//				ModeInfo: &typetx.ModeInfo{
+//					Sum: &typetx.ModeInfo_Single_{
+//						Single: &typetx.ModeInfo_Single{Mode: signing.SignMode_SIGN_MODE_DIRECT},
+//					},
+//				},
+//				Sequence: sequence,
+//			},
+//		},
+//		Fee: &typetx.Fee{
+//			Amount:   sdk.NewCoins(fee),
+//			GasLimit: uint64(gaslimit),
+//			Payer:    "",
+//			Granter:  "",
+//		},
+//	}
+//	txAuthInfoBytes, err := proto.Marshal(authInfo)
+//	if err != nil {
+//		return nil, err
+//	}
+//	signDoc := &typetx.SignDoc{
+//		BodyBytes:     txBodyBytes,
+//		AuthInfoBytes: txAuthInfoBytes,
+//		ChainId:       chainId,
+//		AccountNumber: accountNumber,
+//	}
+//	signatures, err := proto.Marshal(signDoc)
+//	if err != nil {
+//		return nil, err
+//	}
+//	sign, err := privKey.Sign(signatures)
+//	if err != nil {
+//		return nil, err
+//	}
+//	return &typetx.TxRaw{
+//		BodyBytes:     txBodyBytes,
+//		AuthInfoBytes: signDoc.AuthInfoBytes,
+//		Signatures:    [][]byte{sign},
+//	}, nil
+//}

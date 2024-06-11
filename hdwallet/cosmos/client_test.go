@@ -1,6 +1,7 @@
 package cosmos
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -14,7 +15,9 @@ func Test_client(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			NewClient()
+			//NewClient()
+			account, _ := queryAccountInfo()
+			fmt.Println(account.Address)
 		})
 	}
 }
