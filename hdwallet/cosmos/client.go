@@ -38,12 +38,12 @@ func NewClient() (grpcClient *grpc.ClientConn, err error) {
 	//fmt.Println(resp.Txs[0].Body)
 
 	bankClient := banktypes.NewQueryClient(grpcConn)
-	bankReq := &banktypes.QueryBalanceRequest{Address: "cosmos167a4tt9k3ue0rxm2qq4a8pzp4t8ccyt5z26r2d", Denom: "uatom"}
+	bankReq := &banktypes.QueryBalanceRequest{Address: "cosmos1sphlm2dp2a4v9hy7fzvqznus26g03vgz006ldt", Denom: "uatom"}
 	bankResp, err := bankClient.Balance(context.Background(), bankReq)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(bankResp.String())
+	fmt.Println("bank str=", bankResp.String())
 	return grpcConn, nil
 
 }

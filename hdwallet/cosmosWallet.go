@@ -14,10 +14,11 @@ import (
 func cosmosWalletPrivate() {
 	fmt.Println("开始")
 	// 首先你可以生成一个随机熵，熵源助记词是BIP-39，
-	entropy, _ := bip39.NewEntropy(128)
-	fmt.Println("entroy:", entropy)
+	//entropy, _ := bip39.NewEntropy(128)
+	//fmt.Println("entroy:", entropy)
 	// 通过熵源生成助记词  ==> 注意，不一定要有助记词才有种子，只是助记词方便备份，可以转成种子，你要直接由种子也行，但不好记
-	mnemonic, _ := bip39.NewMnemonic(entropy)
+	//mnemonic, _ := bip39.NewMnemonic(entropy)
+	mnemonic := "rural neither robot good glove bracket fee harsh bird iron segment rug"
 	fmt.Println("mnemonic:", mnemonic)
 	// 通过助记词生成种子Seed
 	seed := bip39.NewSeed(mnemonic, "") // password盐值不要加
