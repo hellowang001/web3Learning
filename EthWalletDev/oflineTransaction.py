@@ -44,7 +44,7 @@ transaction = {
 # 对交易进行签名
 signed_tx = web3.eth.account.sign_transaction(transaction, private_key)
 print(f"Transaction hash: {signed_tx.hash.hex()}")
-
+、
 # 发送交易
 tx_hash = web3.eth.send_raw_transaction(signed_tx.rawTransaction)
 print(f"Transaction sent, hash: {tx_hash.hex()}")
