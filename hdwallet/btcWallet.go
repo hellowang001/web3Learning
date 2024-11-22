@@ -3,12 +3,9 @@ package hdwallet
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/txscript"
-	"github.com/tyler-smith/go-bip32"
-	"github.com/tyler-smith/go-bip39"
 )
 
 // var mnemonic = "silver list book boost comic ride rigid weasel swear actor tiny claw"
@@ -16,11 +13,11 @@ import (
 func btcWallet() (masterKey *bip32.Key) {
 	fmt.Println("开始")
 	// 首先你可以生成一个随机熵，熵源助记词是BIP-39，
-	//entropy, _ := bip39.NewEntropy(128)
+	entropy, _ := bip39.NewEntropy(128)
 	//fmt.Println("entroy:", entropy)
 	// 通过熵源生成助记词  ==> 注意，不一定要有助记词才有种子，只是助记词方便备份，可以转成种子，你要直接由种子也行，但不好记
 	//mnemonic, _ := bip39.NewMnemonic(entropy)
-	mnemonic := "silver list book boost comic ride rigid weasel swear actor tiny claw"
+	// mnemonic := "silver list book boost comic ride rigid weasel swear actor tiny claw"
 
 	fmt.Println("mnemonic:", mnemonic)
 	// 通过助记词生成种子Seed
@@ -52,10 +49,10 @@ func legacAddr(masterKey *bip32.Key) {
 	// 子私钥key 已经出来了，先打印私钥，key.Key就是私钥，注意要转化进制
 	btcPrivateKeyStr := hex.EncodeToString(key.Key) // 编码成字符串 , 这里打印出来的私钥就可以
 	fmt.Println("btcPrivateKeyStr", btcPrivateKeyStr)
-	//privKey, _ := btcec.PrivKeyFromBytes(btcec.S256(), key.Key)
+	privKey, _ := btcec.PrivKeyFromBytes(btcec.S256(), key.Key)
 	// 这里是btc的转化过程
 	// 先还是拿到公钥
-	//pubKeyByte := privKey.PubKey()
+	pubKeyByte := privKey.PubKey()
 
 	// 1、Legacy地址
 	legacyAddr, err := btcutil.NewAddressPubKeyHash(btcutil.Hash160(key.PublicKey().Key), &chaincfg.MainNetParams)
