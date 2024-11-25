@@ -1,0 +1,14 @@
+{
+  "inputs": [
+    {
+      "txid":"7c0b6b00db04cd88f6d0d45173724b2a76fc5833f1bf9cbf7818d32472486dc1",
+      "index":0,
+      "utxoid":""
+    },
+    {
+      "txid":"816bf84afc67931718e026bc2e6ba0f4b31682880e10b6f04c13ed943df088c6",
+      "index":0,
+      "utxoid":""
+    }
+  ]
+}

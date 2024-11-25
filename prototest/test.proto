@@ -1,0 +1,143 @@
+syntax = "proto3";
+package NWGame.http.User;
+
+message Assets {
+ repeated ItemResData Items = 1;
+}
+
+// 背包信息
+message Bag {
+ map<sint32, Item> Items = 1; // 物品id => 物品
+}
+
+// 修改名字
+message ChangeNameCs {
+ string Name = 1;
+}
+
+message ChangeNameSc {
+}
+
+// 获取玩家背包数据
+message GetBagInfoCs {
+}
+
+message GetBagInfoSc {
+ Bag Bag = 1;
+}
+
+// 获取服务入口信息
+message GetServerInfoCs {
+ sint64 Foo = 1;
+}
+
+message GetServerInfoSc {
+ ServerInfo SeaMapTcp = 1; // 海战地图服TCP
+ ServerInfo SeaMapWebsocket = 2; // 海战地图服Websocket
+}
+
+// 获取玩家基本信息
+message GetUserInfoCs {
+}
+
+message GetUserInfoSc {
+ sint64 Uid = 1; // 玩家唯一id
+ string Name = 2; // 玩家名字
+ sint64 Power = 3; // 战斗力
+ sint32 PveProgress = 4; // pve进度
+ string HeadImage = 5; // 玩家头像
+ sint32 TitleLevel = 6; // 爵位等级
+ sint32 TitleRewardsLevel = 7; // 爵位奖励等级
+ sint64 MakeMoneySpeed = 8; // 赚钱速度
+ bool IsReceiveSpecialShip = 9; // 是否领取过联盟特使船奖励
+}
+
+// GM命令
+message GmCommandCs {
+ string Command = 1;
+}
+
+message GmCommandSc {
+}
+
+// 物品
+message Item {
+ sint32 Id = 1; // 物品id
+ sint64 Count = 2; // 物品数量
+}
+
+message ItemResData {
+ sint32 Id = 1;
+ sint64 Num = 2;
+}
+
+message ReceiveTitleRewardsCs {
+}
+
+message ReceiveTitleRewardsSc {
+}
+
+message ServerInfo {
+ string Name = 1; // 服务名称
+ string Host = 2; // ip或者域名
+ sint64 Port = 3; // tcp端口
+}
+
+message TestAddAssetsCs {
+ sint64 Uid = 1;
+ Assets Assets = 2;
+}
+
+message TestAddAssetsSc {
+}
+
+// 创建一个玩家，测试使用
+message TestCreateUserCs {
+ sint64 Uid = 1;
+ string Name = 2;
+}
+
+message TestCreateUserSc {
+}
+
+// 删除所有玩家，清库，测试使用
+message TestDeleteAllCs {
+}
+
+message TestDeleteAllSc {
+}
+
+// 删除一个玩家，测试使用
+message TestDeleteUserCs {
+ sint64 Uid = 1;
+}
+
+message TestDeleteUserSc {
+}
+
+// 触发玩家的登录事件，测试使用
+message TestLoginCs {
+}
+
+message TestLoginSc {
+ sint64 NowMs = 1; // 当前时间戳（毫秒）
+}
+
+message TestSetVoiceIdCs {
+ sint32 VoiceId = 1;
+}
+
+message TestSetVoiceIdSc {
+ sint32 VoiceId = 1;
+}
+
+// 使用物品
+message UseItemCs {
+ sint32 ItemId = 1; // 使用物品ID
+ sint64 Num = 2; // 使用物品数量
+ sint32 BoxSelection = 3; // （选择类宝箱）SelectBox表的id
+}
+
+message UseItemSc {
+ repeated ItemResData Rewards = 1; // 得到的新物品
+}
