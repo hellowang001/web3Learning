@@ -6,4 +6,5 @@ func TestGenerateOfflineAddress(t *testing.T) {
 	//GenerateOfflineAddress()
 	//getAccountInfo()
 	SendTrx()
+	//TokenTx()
 }
