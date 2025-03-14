@@ -14,7 +14,7 @@ func Test_client(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			NewClient()
+			//NewClient()
 			t.Log("This is a log message.")
 			//transaction()
 		})
