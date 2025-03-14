@@ -10,3 +10,6 @@ func TestWallet(t *testing.T) {
 func TestSendToken(t *testing.T) {
 	SendToken()
 }
+func TestRaydiumSwap(t *testing.T) {
+	RaydiumSwap()
+}
