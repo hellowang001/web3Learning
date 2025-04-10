@@ -21,6 +21,6 @@ func GenerateOfflineAddress() {
 	key, _ = key.NewChildKey(bip32.FirstHardenedChild + uint32(5757)) // 还是强化派生，对应 coin_type类型60'
 	key, _ = key.NewChildKey(bip32.FirstHardenedChild + uint32(0))    // 还是强化派生，对应account
 	key, _ = key.NewChildKey(uint32(0))                               // 常规派生，对应 change
-	key, _ = key.NewChildKey(uint32(0))                               // 常规派生，对应的 address_index
+	key, _ = key.NewChildKey(uint32(0))                               // 常规派生，对应的 address_index，
 
 }
